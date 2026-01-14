@@ -6,11 +6,14 @@
 app = 'bip-39'
 primary_region = 'lhr'
 
+[build]
+  # Use the Dockerfile in the root directory
+
 [http_service]
 auto_start_machines = true
 auto_stop_machines = "suspend"
 force_https = true
-internal_port = 8_080
+internal_port = 8080
 min_machines_running = 0
 processes = [ "app" ]
 
