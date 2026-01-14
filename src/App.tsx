@@ -40,7 +40,7 @@ function App() {
             BIP39 Word Generator
           </h1>
           <p className="text-gray-600 text-center mb-8">
-            Generate random words from the BIP39 wordlist for usernames, passwords, and more
+            Generate memorable passwords, usernames, and email addresses using BIP39 words
           </p>
 
           <div className="space-y-6">
@@ -146,7 +146,7 @@ function App() {
                 </div>
                 <div className="ml-3">
                   <p className="text-sm text-blue-700">
-                    <strong>Note:</strong> These words are randomly selected from the BIP39 wordlist. Store them securely if you plan to use them for passwords or sensitive accounts.
+                    This tool generates random words from the BIP39 wordlist for creating memorable passwords, usernames, and email addresses. Not for use with cryptocurrency wallets.
                   </p>
                 </div>
               </div>

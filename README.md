@@ -1,17 +1,25 @@
 # BIP39 Word Generator
 
-A modern web application for generating secure BIP39 mnemonic phrases, built with React, TypeScript, Vite, and Tailwind CSS.
+A modern web application for generating memorable passwords, usernames, and email addresses using words from the BIP39 wordlist. Built with React, TypeScript, Vite, and Tailwind CSS.
 
 ## Features
 
-- Generate BIP39 mnemonic phrases with 12, 15, 18, 21, or 24 words
+- Generate 2-24 random words from the BIP39 wordlist
 - Display words in multiple formats:
-  - **Username format**: First two words separated by a dot (e.g., "word.word")
-  - **Password format**: First three words separated by dashes (e.g., "word-word-word")
-  - **Full mnemonic**: All words in a textarea for easy copying
+  - **Username format**: All words separated by dots (e.g., "word.word.word")
+  - **Password format**: All words separated by dashes (e.g., "word-word-word")
+  - **Full list**: All words in a textarea for easy copying
 - Copy functionality for all formats
 - Responsive design with Tailwind CSS
 - Static build for easy deployment
+
+## Use Cases
+
+- Memorable passwords
+- Unique usernames
+- Email addresses
+- Security questions
+- Passphrases
 
 ## Installation
 
@@ -47,9 +55,9 @@ Since this is a static application, you can deploy it to various hosting platfor
 - **Vercel**: Import your repository or upload the `dist` folder
 - **Any static hosting**: Just serve the `dist` folder
 
-## Security Warning
+## About
 
-⚠️ **Important**: The generated mnemonic phrases should be stored securely offline. Never share them with anyone. Anyone with access to these words can access your cryptocurrency wallet.
+This tool generates random words from the BIP39 wordlist for creating memorable passwords, usernames, and email addresses. It's not for use with cryptocurrency wallets - for wallet recovery phrases, use dedicated wallet software.
 
 ## Technologies Used
 
