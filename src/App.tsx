@@ -5,36 +5,31 @@ function App() {
   const [wordCount, setWordCount] = useState<number>(12)
   const [words, setWords] = useState<string[]>([])
 
-  const validWordCounts = [12, 15, 18, 21, 24]
+  // Generate array of word counts from 2 to 24
+  const validWordCounts = Array.from({ length: 23 }, (_, i) => i + 2)
 
   const generateWords = () => {
-    // BIP39 word counts correspond to entropy bits: 12=128, 15=160, 18=192, 21=224, 24=256
-    const entropyBits = ((wordCount / 3) * 32)
-    const entropyBytes = entropyBits / 8
+    // Get the BIP39 wordlist
+    const wordlist = bip39.wordlists.english
 
-    // Generate random entropy
-    const entropy = new Uint8Array(entropyBytes)
-    crypto.getRandomValues(entropy)
+    // Generate random words from the wordlist
+    const randomWords: string[] = []
+    for (let i = 0; i < wordCount; i++) {
+      const randomIndex = crypto.getRandomValues(new Uint32Array(1))[0] % wordlist.length
+      randomWords.push(wordlist[randomIndex])
+    }
 
-    // Convert to hex string
-    const entropyHex = Array.from(entropy)
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('')
-
-    // Generate mnemonic from entropy
-    const mnemonic = bip39.entropyToMnemonic(entropyHex)
-    const wordArray = mnemonic.split(' ')
-    setWords(wordArray)
+    setWords(randomWords)
   }
 
   const getDotFormat = () => {
     if (words.length === 0) return ''
-    return words.slice(0, 2).join('.')
+    return words.join('.')
   }
 
   const getDashFormat = () => {
     if (words.length === 0) return ''
-    return words.slice(0, 3).join('-')
+    return words.join('-')
   }
 
   return (
@@ -45,7 +40,7 @@ function App() {
             BIP39 Word Generator
           </h1>
           <p className="text-gray-600 text-center mb-8">
-            Generate secure mnemonic phrases for cryptocurrency wallets
+            Generate random words from the BIP39 wordlist for usernames, passwords, and more
           </p>
 
           <div className="space-y-6">
@@ -83,15 +78,15 @@ function App() {
                   <div className="space-y-3">
                     <div>
                       <label className="block text-xs font-medium text-gray-500 mb-1">
-                        Username Format
+                        Username Format (dot-separated)
                       </label>
                       <div className="flex items-center space-x-2">
-                        <code className="flex-1 bg-white px-3 py-2 rounded border border-gray-300 text-sm font-mono">
+                        <code className="flex-1 bg-white px-3 py-2 rounded border border-gray-300 text-sm font-mono break-all">
                           {getDotFormat()}
                         </code>
                         <button
                           onClick={() => navigator.clipboard.writeText(getDotFormat())}
-                          className="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded text-sm transition-colors"
+                          className="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded text-sm transition-colors whitespace-nowrap"
                           title="Copy to clipboard"
                         >
                           Copy
@@ -101,15 +96,15 @@ function App() {
 
                     <div>
                       <label className="block text-xs font-medium text-gray-500 mb-1">
-                        Password Format
+                        Password Format (dash-separated)
                       </label>
                       <div className="flex items-center space-x-2">
-                        <code className="flex-1 bg-white px-3 py-2 rounded border border-gray-300 text-sm font-mono">
+                        <code className="flex-1 bg-white px-3 py-2 rounded border border-gray-300 text-sm font-mono break-all">
                           {getDashFormat()}
                         </code>
                         <button
                           onClick={() => navigator.clipboard.writeText(getDashFormat())}
-                          className="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded text-sm transition-colors"
+                          className="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded text-sm transition-colors whitespace-nowrap"
                           title="Copy to clipboard"
                         >
                           Copy
@@ -141,17 +136,17 @@ function App() {
               </div>
             )}
 
-            {/* Warning Message */}
-            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6">
+            {/* Info Message */}
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mt-6">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  <svg className="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-yellow-700">
-                    <strong>Security Warning:</strong> Store these words securely offline. Never share them with anyone. Anyone with access to these words can access your wallet.
+                  <p className="text-sm text-blue-700">
+                    <strong>Note:</strong> These words are randomly selected from the BIP39 wordlist. Store them securely if you plan to use them for passwords or sensitive accounts.
                   </p>
                 </div>
               </div>
