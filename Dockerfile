@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci --only=production
 
 # Copy source files
 COPY . .
@@ -15,19 +15,20 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Production stage
-FROM node:20-alpine
+# Verify build output exists
+RUN ls -la /app/dist && cat /app/dist/index.html
 
-WORKDIR /app
-
-# Install a simple HTTP server for serving static files
-RUN npm install -g serve
+# Production stage - use nginx for better performance
+FROM nginx:alpine
 
 # Copy built files from builder stage
-COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Expose port 8080
 EXPOSE 8080
 
-# Serve the built application
-CMD ["serve", "-s", "dist", "-l", "8080"]
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
